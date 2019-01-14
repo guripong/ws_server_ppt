@@ -4,7 +4,7 @@ const express = require('express');
 const WebSocket = require('ws');
 const SocketServer = WebSocket.Server;
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 15234;
 
 const server = express()
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
