@@ -28,7 +28,7 @@ wss.on('connection', function connection(ws,req) {
    
     if(data!='PING')
     {
-	       console.log('ip:',ip,'->received: %s', data);
+	       console.log('ip:',ip,'->received:', data);
     }
     else{
          console.log('##PING by local!##');
@@ -49,4 +49,4 @@ setInterval(() => {
   wss.clients.forEach((client) => {
     client.send(new Date().toTimeString());
   });
-}, 1000);
+}, 5000);
