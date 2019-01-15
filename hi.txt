@@ -1,1 +1,2 @@
-i am john
+lambda -> ws -> local
+
