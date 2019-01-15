@@ -20,16 +20,20 @@ wss.broadcast = function broadcast(data) {
   });
 };
 
-wss.on('connection', function connection(ws) {
+wss.on('connection', function connection(ws,req) {
+  var ip=req.connection.remoteAddress;
+  if(!ip)ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+
   ws.on('message', function incoming(data) {
    
     if(data!='PING')
     {
-	       console.log('received: %s', data);
+	       console.log('ip:',ip,'->received: %s', data);
     }
     else{
          console.log('##PING by local!##');
     }
+
     // Broadcast to everyone else.
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
