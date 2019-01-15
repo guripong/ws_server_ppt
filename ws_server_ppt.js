@@ -4,7 +4,7 @@ const express = require('express');
 const WebSocket = require('ws');
 const SocketServer = WebSocket.Server;
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 15234;
 
 const server = express()
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
@@ -15,7 +15,6 @@ const wss = new SocketServer({ server });
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      
       client.send(data);
     }
   });
@@ -23,15 +22,21 @@ wss.broadcast = function broadcast(data) {
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(data) {
-	 
-	console.log('received: %s', data);
-
+   
+    if(data!='PING')
+    {
+	       console.log('received: %s', data);
+    }
+    else{
+         console.log('##PING by local!##');
+    }
     // Broadcast to everyone else.
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
       }
     });
+
   });
 });
 
