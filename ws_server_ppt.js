@@ -23,7 +23,7 @@ wss.broadcast = function broadcast(data) {
 var id_count = 0;
 var id_client = [];
 
-function save_client_information(ws, ip,isnew) {
+function save_client_information(ws, ip, isnew) {
 
   var returnid = -1;
   for (var i = 0; i < id_count; i++) {
@@ -47,45 +47,35 @@ function save_client_information(ws, ip,isnew) {
 }
 
 wss.on('connection', function connection(ws, req) {
-
-
-
-
   ws.on('message', function incoming(data) {
-    if (data != 'PING') {
-      var ip = req.connection.remoteAddress;
-      if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
-      
-      var isnew=[];
-      isnew[0]=1;
-      var id = save_client_information(ws, ip,isnew);
-
-      if (isnew[0]== 0) {
-        console.log(`[it's not new client!] [ip:`, id_client[id]['ip'], `] [id:`, id),`]`;
-      }
-      else {
-        console.log(`[new client!] [ip:`, id_client[id]['ip'], `] [id:`, id,`]`);
-      }
-      console.log('ip:', ip, '->received:', data);
-
-    }
-
 
     // Broadcast to everyone else.
+
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(data);
+        if (data != 'PING') {
+          var ip = req.connection.remoteAddress;
+          if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+
+          var isnew = [];
+          isnew[0] = 1;
+          var id = save_client_information(ws, ip, isnew);
+
+          if (isnew[0] == 0) {
+            console.log(`[it's not new client!] [ip:`, id_client[id]['ip'], `] [id:`, id), `]`;
+          }
+          else {
+            console.log(`[new client!] [ip:`, id_client[id]['ip'], `] [id:`, id, `]`);
+          }
+          console.log('ip:', ip, '->received:', data);
+        }
+
+        client.send(data); //전부다한테 보냄
       }
-    });
+    }.bind(client));
 
-  });
-
-
-
-
-
-
-});
+  });//message
+}); //connection
 
 
 setInterval(() => {
