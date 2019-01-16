@@ -67,11 +67,12 @@ wss.on('connection', function connection(ws, req) {
     else if(data.indexOf('answer')!==-1){ //answer 포함
       if(data.indexOf('fail')!==-1){ //fail 포함
         console.log(`local has not pptx file.`);
-        ws.send('find pptx file!');
+        //ws.send('find pptx file!');
+        lambdaws.send('find pptx file!');
       }
       else{
         console.log(`local has opended [`,data.split(':')[1],`] file.`);
-        
+        lambdaws.send('okman!');
       }
     }else{ //PING 포함
       console.log('ip:', ip, '->received:', data);
