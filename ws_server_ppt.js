@@ -55,7 +55,7 @@ wss.on('connection', function connection(ws, req) {
     if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
     
     // Broadcast to everyone else.
-    if(data.substr(0,6)='answer'){
+    if(data.substr(0,6)=='answer'){
       if(data.substr(7,11)=='fail'){
         console.log(`local has not pptx file.`);
       }else{
