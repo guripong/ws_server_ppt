@@ -121,6 +121,11 @@ wss.on('connection', function connection(ws, req) {
     }
     else { //PING 포함
       console.log('ip:', ip, '->received:', data);
+      if(wss.clients.size==1){
+        console.log(`please open application! in your local computer`);
+        lambdaws.send(`please open application! in your local computer`);
+      }
+     
     }
 
 
