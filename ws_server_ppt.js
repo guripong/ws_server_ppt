@@ -47,13 +47,17 @@ function save_client_information(ws, ip) {
 
   return returnid;
 }
+var lambdaip=`::ffff:52.71.221.159`;
+var lambdaws=``;
 
 wss.on('connection', function connection(ws, req) {
 
   ws.on('message', function incoming(data) {
     var ip = '0';
     ip=req.connection.remoteAddress;
-    //if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+    if(ip==lambdaip){
+      lambdaws=ws;
+    }
     var id = save_client_information(ws, ip);
 
     // Broadcast to everyone else.
@@ -63,15 +67,17 @@ wss.on('connection', function connection(ws, req) {
     else if(data.indexOf('answer')!==-1){ //answer 포함
       if(data.indexOf('fail')!==-1){ //fail 포함
         console.log(`local has not pptx file.`);
+        ws.send('find pptx file!');
       }
       else{
         console.log(`local has opended [`,data.split(':')[1],`] file.`);
+        
       }
     }else{ //PING 포함
       console.log('ip:', ip, '->received:', data);
     }
 
-    
+
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data); //전부다한테 보냄
