@@ -30,7 +30,7 @@ function save_client_information(ws, ip) {
     if (id_client[i]['ip'] == ip) {
       
       returnid = i;
-      console.log(`[it's not new client!] [ip:`, id_client[i]['ip'], `] [id:`, i), `]`;
+      console.log(`[it's not new client!] [ip:`, id_client[i]['ip'], `] [id:`, i, `]`);
       break;
     }
   }
@@ -54,7 +54,7 @@ wss.on('connection', function connection(ws, req) {
     var ip = req.connection.remoteAddress;
     if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
     var id = save_client_information(ws, ip);
-    
+
     // Broadcast to everyone else.
     if(data.indexOf('answer')!==-1){ //answer 포함
       if(data.indexOf('fail')!==-1){ //fail 포함
