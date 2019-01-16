@@ -54,11 +54,19 @@ wss.on('connection', function connection(ws, req) {
     var ip = req.connection.remoteAddress;
     if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
     
-
     // Broadcast to everyone else.
-    if (data != 'PING') {
+    if(data.substr(0,6)='answer'){
+      if(data.substr(7,11)=='fail'){
+        console.log(`local has not pptx file.`);
+      }else{
+        data=data.split(':')[1];
+        console.log(`openfilename:`,data);
+      }
+    }
+    else if (data != 'PING') {
       var id = save_client_information(ws, ip);
       console.log('ip:', ip, '->received:', data);
+      
     }else{
       console.log('ip:', ip, '->received:PING');
     }
@@ -72,7 +80,7 @@ wss.on('connection', function connection(ws, req) {
 
   });//message
 
-  
+
 }); //connection
 
 
