@@ -67,12 +67,13 @@ wss.on('connection', function connection(ws, req) {
     else if (data.indexOf('answer') !== -1) { //answer 포함
 
       if (data.indexOf('f_open') !== -1) { //fail 포함
-        console.log(`local has not pptx file.`);
+        var reason = data.split(':')[1];
+        console.log(`Failed to open pptx file.`);
         //ws.send('find pptx file!');
-        lambdaws.send('Find pptx file please!');
+        lambdaws.send(`Failed to open pptx file. because `+reason);
       }
       else if (data.indexOf('s_open') !== -1) {
-        console.log(`Succeed to open [`+ data.split(':')[1]+ `] file.`);
+        console.log(`Success to open [`+ data.split(':')[1]+ `] file.`);
         lambdaws.send(`Succeed to open `+ data.split(':')[1]+ ` file.`);
       }
       else if (data.indexOf('f_close') !== -1) {
@@ -84,7 +85,7 @@ wss.on('connection', function connection(ws, req) {
         lambdaws.send('Success to close pptx file.');
       }
       else if (data.indexOf('s_next') !== -1) {
-        console.log(`Succeed go to next slide.`);
+        console.log(`Success go to next slide.`);
         lambdaws.send(`Succeed to go to next slide`);
       }
       else if (data.indexOf('f_next') !== -1) {
