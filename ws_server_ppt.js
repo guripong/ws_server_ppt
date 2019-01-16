@@ -129,6 +129,6 @@ wss.on('connection', function connection(ws, req) {
 
 setInterval(() => {
   wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
+    client.send('PING:'+new Date().toTimeString());
   });
 }, 5000);
