@@ -69,21 +69,41 @@ wss.on('connection', function connection(ws, req) {
       if(data.indexOf('f_open')!==-1){ //fail 포함
         console.log(`local has not pptx file.`);
         //ws.send('find pptx file!');
-        lambdaws.send('find pptx file please!');
+        lambdaws.send('Find pptx file please!');
+      }
+      else if(data.indexOf('s_open')!==-1){
+        console.log(`local has opended [`,data.split(':')[1],`] file.`);
+        lambdaws.send(`Succeed to open `,data.split(':')[1],` file.`);
       }
       else if(data.indexOf('f_close')!==-1){
-        console.log(`local fail to close pptx file.`);
-        lambdaws.send('fail to close pptx file.');
+        console.log(`fail to close pptx file.`);
+        lambdaws.send('Failed to close pptx file.');
       }
       else if(data.indexOf('s_close')!==-1){
         console.log(`local success to close pptx file.`);
-        lambdaws.send('success to close pptx file.');
+        lambdaws.send('Succeed to close pptx file.');
+      }
+      else if(data.indexOf('s_next')!==-1){
+        console.log(`succeed go to next slide.`);
+        lambdaws.send(`Succeed to go to next slide`);
+      }
+      else if(data.indexOf('s_previous')!==-1){
+        console.log(`succeed go to previous slide.`);
+        lambdaws.send(`Succeed to go to previous slide`);
+      }
+      else if(data.indexOf('s_number')!==-1){
+        var tn = data.split(':')[1];
+        console.log(`succeed go to number `,tn,` slide.`);
+        lambdaws.send(`Succeed to go to number `,tn,` slide.`);
+      }
+      else if(data.indexOf('f_number')!==-1){
+        console.log(`failed. go to number `,tn,` slide.`);
+        lambdaws.send(`Failed to go to number `,tn,` slide.`);
       }
       else{
-        console.log(`local has opended [`,data.split(':')[1],`] file.`);
-        lambdaws.send(`local has opended [`,data.split(':')[1],`] file.`);
+        console.log(`error!!!! data:`,data);
       }
-      
+
     }else{ //PING 포함
       console.log('ip:', ip, '->received:', data);
     }
