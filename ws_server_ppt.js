@@ -65,15 +65,25 @@ wss.on('connection', function connection(ws, req) {
       console.log('ip:', ip, '->received:PING');
     }
     else if(data.indexOf('answer')!==-1){ //answer 포함
-      if(data.indexOf('fail')!==-1){ //fail 포함
+
+      if(data.indexOf('f_open')!==-1){ //fail 포함
         console.log(`local has not pptx file.`);
         //ws.send('find pptx file!');
-        lambdaws.send('find pptx file!');
+        lambdaws.send('find pptx file please!');
+      }
+      else if(data.indexOf('f_close')!==-1){
+        console.log(`local fail to close pptx file.`);
+        lambdaws.send('fail to close pptx file.');
+      }
+      else if(data.indexOf('s_close')!==-1){
+        console.log(`local success to close pptx file.`);
+        lambdaws.send('success to close pptx file.');
       }
       else{
         console.log(`local has opended [`,data.split(':')[1],`] file.`);
-        lambdaws.send('okman!');
+        lambdaws.send(`local has opended [`,data.split(':')[1],`] file.`);
       }
+      
     }else{ //PING 포함
       console.log('ip:', ip, '->received:', data);
     }
