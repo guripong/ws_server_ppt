@@ -53,25 +53,25 @@ wss.on('connection', function connection(ws, req) {
   ws.on('message', function incoming(data) {
     var ip = req.connection.remoteAddress;
     if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+    var id = save_client_information(ws, ip);
     
     // Broadcast to everyone else.
-    if(data.substr(0,6)=='answer'){
-      if(data.substr(7,11)=='fail'){
+    if(data.indexOf('answer')!==-1){ //answer 포함
+      if(data.indexOf('fail')!==-1){ //fail 포함
         console.log(`local has not pptx file.`);
-      }else{
-        data=data.split(':')[1];
-        console.log(`openfilename:`,data);
+      }
+      else{
+
+        console.log(`openfilename:`,data.split(':')[1]);
       }
     }
-    else if (data != 'PING') {
-      var id = save_client_information(ws, ip);
+    else if (data.indexOf('PING')!==-1) { //PING 포함
+      console.log('ip:', ip, '->received:PING');
+    }else{ //PING 포함
       console.log('ip:', ip, '->received:', data);
       
-    }else{
-      console.log('ip:', ip, '->received:PING');
     }
     
-
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data); //전부다한테 보냄
