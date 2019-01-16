@@ -20,17 +20,53 @@ wss.broadcast = function broadcast(data) {
   });
 };
 
+var id_count=0;
+var id_client=[];
+
+function save_client_information(ws,ip)
+{
+  var isneedsave=1;
+  for(var i = 0 ; i<id_client.length ; i++)
+  {
+    if(id_client[i]['ws']==ws)
+    {
+      isneedsave=0;
+      break;
+    }
+  }
+  if(isneedsave==0){
+    id_client[id_count]={};
+    id_client[id_count]['ws']=ws;
+    id_client[id_count]['ip']=ip;
+    id_count++;
+    return 1;
+  }
+  else{
+    return 0;
+  }
+}
+
 wss.on('connection', function connection(ws,req) {
   var ip=req.connection.remoteAddress;
   if(!ip)ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
-  console.log(`ws.id:`,ws.id);
+  
+
+  if(save_client_information(ws,ip)==0)
+  {
+    console.log(`it's not new client`);
+  }
+  else{
+    console.log(`new client!`);
+  }
+
+  
 
   ws.on('message', function incoming(data) {
    
     if(data!='PING')
     {
          console.log('ip:',ip,'->received:', data);
-         
+                 
 
     }
     else{
