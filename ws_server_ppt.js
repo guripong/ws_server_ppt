@@ -84,8 +84,12 @@ wss.on('connection', function connection(ws, req) {
         lambdaws.send('Succeed to close pptx file.');
       }
       else if(data.indexOf('s_next')!==-1){
-        console.log(`succeed go to next slide.`);
+        console.log(`Succeed go to next slide.`);
         lambdaws.send(`Succeed to go to next slide`);
+      }
+      else if(data.indexOf('f_next')!==-1){
+        console.log(`Failed go to next slide.`);
+        lambdaws.send(`Failed to go to next slide`);
       }
       else if(data.indexOf('s_previous')!==-1){
         console.log(`succeed go to previous slide.`);
@@ -123,6 +127,6 @@ wss.on('connection', function connection(ws, req) {
 
 setInterval(() => {
   wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
+    if(client!=lambdaws)client.send(new Date().toTimeString());
   });
 }, 5000);
