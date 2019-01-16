@@ -51,26 +51,26 @@ function save_client_information(ws, ip) {
 wss.on('connection', function connection(ws, req) {
 
   ws.on('message', function incoming(data) {
-    var ip = req.connection.remoteAddress;
-    if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+    var ip = '0';
+    ip=req.connection.remoteAddress;
+    //if (!ip) ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
     var id = save_client_information(ws, ip);
 
     // Broadcast to everyone else.
-    if(data.indexOf('answer')!==-1){ //answer 포함
+    if(data.indexOf('PING')!==-1){
+      console.log('ip:', ip, '->received:PING');
+    }
+    else if(data.indexOf('answer')!==-1){ //answer 포함
       if(data.indexOf('fail')!==-1){ //fail 포함
         console.log(`local has not pptx file.`);
       }
       else{
-
-        console.log(`openfilename:`,data.split(':')[1]);
+        console.log(`local has opended [`,data.split(':')[1],`] file.`);
       }
-    }
-    else if (data.indexOf('PING')!==-1) { //PING 포함
-      console.log('ip:', ip, '->received:PING');
     }else{ //PING 포함
       console.log('ip:', ip, '->received:', data);
-      
     }
+
     
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
