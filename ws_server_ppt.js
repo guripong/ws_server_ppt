@@ -88,22 +88,30 @@ wss.on('connection', function connection(ws, req) {
         lambdaws.send(`Succeed to go to next slide`);
       }
       else if (data.indexOf('f_next') !== -1) {
+        var reason = data.split(':')[1];
         console.log(`Failed go to next slide.`);
-        lambdaws.send(`Failed to go to next slide`);
+        lambdaws.send(`Failed to go to next slide. because `+reason);
       }
       else if (data.indexOf('s_previous') !== -1) {
-        console.log(`succeed go to previous slide.`);
-        lambdaws.send(`Succeed to go to previous slide`);
+        
+        console.log(`success go to previous slide.`);
+        lambdaws.send(`Succeed. go to previous slide`);
+      }
+      else if (data.indexOf('f_previous') !== -1) {
+        var reason = data.split(':')[1];
+        console.log(`Failed go to previous slide.`);
+        lambdaws.send(`Failed to go to previous slide. because `+reason);
       }
       else if (data.indexOf('s_number') !== -1) {
         var tn = data.split(':')[1];
-        console.log(`succeed go to number `+ tn+ ` slide.`);
-        lambdaws.send(`Succeed to go to number `+ tn+ ` slide.`);
+        console.log(`success to go to number `+ tn+ ` slide.`);
+        lambdaws.send(`Succeed. go to number `+ tn+ ` slide.`);
       }
       else if (data.indexOf('f_number') !== -1) {
         var tn = data.split(':')[1];
-        console.log(`failed. go to number `+ tn+ ` slide.`);
-        lambdaws.send(`Failed to go to number `+ tn+ ` slide.`);
+        var reason = data.split(':')[2];
+        console.log(`Failed to go to number `+ tn+ ` slide. because `+reason);
+        lambdaws.send(`Failed to go to number `+ tn+ ` slide. because `+reason);
       }
       else {
         console.log(`error!!!! data:`+ data);
