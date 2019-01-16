@@ -23,12 +23,15 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', function connection(ws,req) {
   var ip=req.connection.remoteAddress;
   if(!ip)ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+  console.log(`ws.id:`,ws.id);
 
   ws.on('message', function incoming(data) {
    
     if(data!='PING')
     {
-	       console.log('ip:',ip,'->received:', data);
+         console.log('ip:',ip,'->received:', data);
+         
+
     }
     else{
          console.log('##PING by local!##');
@@ -42,6 +45,12 @@ wss.on('connection', function connection(ws,req) {
     });
 
   });
+
+
+
+
+
+
 });
 
 
