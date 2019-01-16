@@ -110,7 +110,7 @@ wss.on('connection', function connection(ws, req) {
       }
       else if (data.indexOf('f_number') !== -1) {
         var tn = data.split(':')[1];
-        var reason = data.split(':')[2];
+        var reason = data.split(':')[3];
         console.log(`Failed to go to number `+ tn+ ` slide. because `+reason);
         lambdaws.send(`Failed to go to number `+ tn+ ` slide. because `+reason);
       }
