@@ -53,7 +53,8 @@ var lambdaws = ``;
 wss.on('connection', function connection(ws, req) {
 
   ws.on('message', function incoming(data) {
-    var ip =req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
+    var ip ='0';
+    ip=req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
     console.log(`1:`,req.headers['x-forwarded-for']);
 
     if (ip == lambdaip) {
