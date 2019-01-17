@@ -53,14 +53,12 @@ var lambdaws = ``;
 wss.on('connection', function connection(ws, req) {
 
   ws.on('message', function incoming(data) {
-    var ip = '0';
-    //ip = req.connection.remoteAddress;
-    ip = req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
-    console.log(ip);
-    
+    var ip =req.headers['x-forwarded-for'].split(/\s*,\s*/)[0];
     if (ip == lambdaip) {
+      console.log(`here is lambda!`);
       lambdaws = ws;
     }
+
     var id = save_client_information(ws, ip);
 
     // Broadcast to everyone else.
