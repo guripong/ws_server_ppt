@@ -78,7 +78,7 @@ wss.on('connection', function connection(ws, req) {
       }
       else if (data.indexOf('s_open') !== -1) {
         console.log(`Success to open [`+ data.split(':')[1]+ `] file.`);
-        lambdaws.send(`Succeed to open `+ data.split(':')[1]+ ` file.`);
+        lambdaws.send(`Okay. I'm opening the file , `+ data.split(':')[1]+ ` , now.`);
       }
       else if (data.indexOf('f_close') !== -1) {
         console.log(`Failed to close pptx file.`);
@@ -86,7 +86,7 @@ wss.on('connection', function connection(ws, req) {
       }
       else if (data.indexOf('s_close') !== -1) {
         console.log(`local success to close pptx file.`);
-        lambdaws.send('Success to close pptx file.');
+        lambdaws.send(`Okay. I'm ending your powerpoint session now.`);
       }
       else if (data.indexOf('s_next') !== -1) {
         console.log(`Success go to next slide.`);
